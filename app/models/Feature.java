@@ -18,5 +18,7 @@ public class Feature extends Model {
 
     public String description;
 
+    public String imageUrl;
+
     public static final Finder<Long, Feature> find = new Finder<>(Feature.class);
 }

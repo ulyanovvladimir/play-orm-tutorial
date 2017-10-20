@@ -12,6 +12,7 @@
             @CSRF.formField
             @inputText(featureForm("title"), '_label -> "Название", '_help -> "")
             @inputText(featureForm("description"), '_label -> "Описание", '_help -> "")
+            @inputText(featureForm("imageUrl"), '_label -> "Ссылка на картинку", '_help -> "")
             <input type="hidden" name="@featureForm("id").getName" value="@featureForm("id").getValue">
         </fieldset>
 

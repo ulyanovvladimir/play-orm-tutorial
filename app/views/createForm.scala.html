@@ -12,10 +12,11 @@
             @CSRF.formField
             @inputText(featureForm("title"), '_label -> "Название", '_help -> "")
             @inputText(featureForm("description"), '_label -> "Описание", '_help -> "")
+            @inputText(featureForm("imageUrl"), '_label -> "Ссылка на картинку", '_help -> "")
         </fieldset>
         
         <div class="actions">
-            <input type="submit" value="Создать фичу" class="btn primary"> или
+            <input type="submit" value="Создать фичу" class="btn btn-primary"> или
             <a href="@routes.HomeController.list()" class="btn btn-default">Отменить</a>
         </div>
     }

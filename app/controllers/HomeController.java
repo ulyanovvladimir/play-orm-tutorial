@@ -33,20 +33,33 @@ public class HomeController extends Controller {
      * <code>GET</code> request with a path of <code>/</code>.
      */
     public Result index() {
-        return ok(index.render("Your new application is ready."));
+        List<Feature> all = Feature.find.all();
+        return ok(index.render("Your new application is ready.", all));
     }
 
+    /**
+     * Список фич
+     * @return
+     */
     public Result list(){
+
         List<Feature> page = Feature.find.all();
         return ok(list.render(page));
     }
 
-
+    /**
+     * Пустая форма для создания фичи
+     * @return
+     */
     public Result create(){
         Form<Feature> featureForm = formFactory.form(Feature.class);
         return ok(createForm.render(featureForm));
     }
 
+    /**
+     * Обрабатывает форму создания
+     * @return
+     */
     public Result save(){
         Form<Feature> featureForm = formFactory.form(Feature.class).bindFromRequest();
         if (featureForm.hasErrors()){
@@ -61,16 +74,26 @@ public class HomeController extends Controller {
         }
     }
 
+    /**
+     * Форму заполненную данными
+     * @param id
+     * @return
+     */
     public Result edit(Long id){
         Feature f = Feature.find.byId(id);
         if (f == null){
-            return notFound();
+            return notFound("404 NotFound");
         }
         Form<Feature> featureForm = formFactory.form(Feature.class).fill(f);
 
         return ok(editForm.render(id, featureForm));
     }
 
+    /**
+     * обновляет объект в СУБД
+     * @param id
+     * @return
+     */
     public Result update(Long id){
         Form<Feature> featureForm = formFactory.form(Feature.class).bindFromRequest();
         if (featureForm.hasErrors()){
@@ -81,11 +104,17 @@ public class HomeController extends Controller {
             Feature f2 = featureForm.get();
             f1.title = f2.title;
             f1.description = f2.description;
+            f1.imageUrl = f2.imageUrl;
             f1.update();
             return redirect(routes.HomeController.list());
         }
     }
 
+    /**
+     * Удаление
+     * @param id
+     * @return
+     */
     public Result delete(Long id){
         Feature f = Feature.find.byId(id);
         if (f == null){

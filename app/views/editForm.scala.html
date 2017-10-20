@@ -1,0 +1,30 @@
+@(id: Long, featureForm: Form[Feature])
+
+@import helper._
+
+@main {
+
+    <h1>Фича</h1>
+
+    @form(routes.HomeController.update(id)) {
+
+        <fieldset>
+            @CSRF.formField
+            @inputText(featureForm("title"), '_label -> "Название", '_help -> "")
+            @inputText(featureForm("description"), '_label -> "Описание", '_help -> "")
+            <input type="hidden" name="@featureForm("id").getName" value="@featureForm("id").getValue">
+        </fieldset>
+
+        <div class="actions">
+            <input type="submit" value="Сохранить" class="btn primary"> или
+            <a href="@routes.HomeController.list()" class="btn btn-default">Отменить</a>
+        </div>
+    }
+
+
+    @form(routes.HomeController.delete(id), 'class -> "topRight") {
+        @CSRF.formField
+        <input type="submit" value="Удалить" class="btn btn-danger">
+    }
+
+}

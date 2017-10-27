@@ -13,9 +13,10 @@ public class Feature extends Model {
     @Id
     public Long id;
 
-    @Constraints.Required
+    @Constraints.Required(message = "Обязательное поле")
     public String title;
 
+    @Constraints.Required(message = "Обязательное поле")
     public String description;
 
     public String imageUrl;

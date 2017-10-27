@@ -12,7 +12,7 @@
         <fieldset>
             @CSRF.formField
             @text(featureForm("title"), '_label -> "Название", '_help -> "")
-            @text(featureForm("description"), '_label -> "Описание", '_help -> "")
+            @bootstrap.textarea(featureForm("description"), '_label -> "Описание", '_help -> "", 'rows -> 10)
             @text(featureForm("imageUrl"), '_label -> "Ссылка на картинку", '_help -> "")
         </fieldset>
         

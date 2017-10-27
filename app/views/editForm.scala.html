@@ -11,21 +11,18 @@
         <fieldset>
             @CSRF.formField
             @inputText(featureForm("title"), '_label -> "Название", '_help -> "")
-            @inputText(featureForm("description"), '_label -> "Описание", '_help -> "")
+            @bootstrap.textarea(featureForm("description"), '_label -> "Описание", '_help -> "")
             @inputText(featureForm("imageUrl"), '_label -> "Ссылка на картинку", '_help -> "")
             <input type="hidden" name="@featureForm("id").getName" value="@featureForm("id").getValue">
         </fieldset>
 
         <div class="actions">
-            <input type="submit" value="Сохранить" class="btn primary"> или
+            <input type="submit" value="Сохранить" class="btn primary">
             <a href="@routes.HomeController.list()" class="btn btn-default">Отменить</a>
+            @form(routes.HomeController.delete(id), 'class -> "topRight") {
+                @CSRF.formField
+                <input type="submit" value="Удалить" class="btn btn-danger">
+            }
         </div>
     }
-
-
-    @form(routes.HomeController.delete(id), 'class -> "topRight") {
-        @CSRF.formField
-        <input type="submit" value="Удалить" class="btn btn-danger">
-    }
-
 }

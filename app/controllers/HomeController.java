@@ -102,10 +102,8 @@ public class HomeController extends Controller {
             Feature f1 = Feature.find.byId(id);
             if(f1 == null) return notFound();
             Feature f2 = featureForm.get();
-            f1.title = f2.title;
-            f1.description = f2.description;
-            f1.imageUrl = f2.imageUrl;
-            f1.update();
+            f2.id = id;
+            f2.update();
             return redirect(routes.HomeController.list());
         }
     }

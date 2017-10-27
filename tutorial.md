@@ -84,13 +84,13 @@ public class Feature extends Model {
 ebean.default = ["models.*"]
 ```
 
-##Долгосрочное хранение
+## Долгосрочное хранение
 Если вы хотите настроить вашу H2 для хранения данных не в памяти, а в файле, необходимо указать следующую строчку в conf/application.conf
 ```properties
 default.url = "jdbc:h2:file:./db/play"
 ```
 
-#Bootstrap основа шаблона для страницы администрирования
+## Bootstrap основа шаблона для страницы администрирования
 ```scala
 @(content: Html)
 
@@ -134,7 +134,7 @@ default.url = "jdbc:h2:file:./db/play"
 </html>
 ```
 
-# Bootstrap для полей формы
+## Bootstrap для полей формы
 Для того, чтобы определить собственную отрисовку полей формы (например, в стиле Bootstrap), 
 можно определять собственные функции в собственных пакетах. Для начала создадим папку app/views/bootstrap
 В ней определим шаблон для текстового поля в соответствии с документацией Twitter Bootstrap:
@@ -169,7 +169,7 @@ default.url = "jdbc:h2:file:./db/play"
   </div>
 ```
 
-Далее используем нашу новую функцию, нашу новую компоненту для отрисовки поля формы вместо  стандартоного inputText 
+Далее используем нашу новую функцию, нашу новую компоненту для отрисовки поля формы вместо  стандартного inputText 
 в createForm.scala.html получим:
 
 ```scala
@@ -200,7 +200,7 @@ default.url = "jdbc:h2:file:./db/play"
 ```
 
 Для того, чтобы определить textarea для ввода большого количество текста, аналогичным образом определить функцию-шаблон для textarea в пакете bootstrap 
-(app\views\bootstrap\textareea.scala.html) 
+(app\views\bootstrap\textarea.scala.html) 
 ```scala
 @**
 * Generate an HTML input text.
@@ -236,6 +236,8 @@ default.url = "jdbc:h2:file:./db/play"
     @Constraints.Required(message = "Обязательное поле")
     public String description;
 ```
+
+Поделайте аналогичную последовательность действий для шаблона editForm.scala.html
 
 Теперь можно запустить проект. При этом вам предложат создать БД, если она создается впервые.
 

@@ -1,6 +1,7 @@
 @(featureForm: Form[Feature])
 
 @import helper._
+@import bootstrap._
 
 @main {
     
@@ -10,9 +11,9 @@
         
         <fieldset>
             @CSRF.formField
-            @inputText(featureForm("title"), '_label -> "Название", '_help -> "")
-            @inputText(featureForm("description"), '_label -> "Описание", '_help -> "")
-            @inputText(featureForm("imageUrl"), '_label -> "Ссылка на картинку", '_help -> "")
+            @text(featureForm("title"), '_label -> "Название", '_help -> "")
+            @text(featureForm("description"), '_label -> "Описание", '_help -> "")
+            @text(featureForm("imageUrl"), '_label -> "Ссылка на картинку", '_help -> "")
         </fieldset>
         
         <div class="actions">

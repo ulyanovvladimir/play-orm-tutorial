@@ -241,6 +241,89 @@ default.url = "jdbc:h2:file:./db/play"
 
 Теперь можно запустить проект. При этом вам предложат создать БД, если она создается впервые.
 
+
+# WYSIWYG редактор
+Скачайте [TinyMCE](https://www.tinymce.com/download/) и распакуйте в папку public.
+
+Создайте в папке views/bootstrap/editor.scala.html для хелпера формы, который будет предоставлять WYSIWYG-редактор 
+поверх тэга textarea.
+
+```scala
+@**
+* Generate an HTML input text.
+*
+* Example:
+* {{{
+* @editor(field = myForm("name"), args = 'size -> 10, 'placeholder -> "Your name")
+* }}}
+*
+* @param field The form field.
+* @param args Set of extra attributes.
+* @param handler The field constructor.
+*@
+@(field: play.api.data.Field, args: (Symbol,Any)*)(implicit handler: helper.FieldConstructor, lang: play.api.i18n.Lang)
+
+@import helper._;
+@invalid = @{if (field.hasErrors){"is-invalid"} else if(!field.value.isEmpty){"is-valid"} else {""}}
+
+<div class="form-group">
+    <label class="control-label" for="@field.id">@{args.toMap.get('_label).map(_.toString).getOrElse(field.name)}</label>
+    <textarea class="form-control @invalid wysiwyg" id="@field.id" name="@field.name" @toHtmlArgs(args.filter(arg => !arg._1.name.startsWith("_") && arg._1 != 'id).toMap)>@field.value</textarea>
+    <div class="invalid-feedback">
+    @{field.error.map { error => error.message }}
+    </div>
+    <div class="help-block">@{args.toMap.get('_help).map(_.toString).getOrElse("")}</div>
+</div>
+<script type="text/javascript" src="@routes.Assets.versioned("tinymce/js/tinymce/tinymce.min.js")"></script>
+<script type="text/javascript" src="@routes.Assets.versioned("js/editor.js")"></script>
+```
+
+Кроме стандартного хелпера для textarea мы добавили два тега script с подгрузкой соответствующих скриптов tinymce.min.js и нашего скрипта 
+editor.js, который будет подключать редактор к тегу textarea. 
+
+Содержимое файла editor.js:
+```javascript
+tinymce.init({
+    selector: '.wysiwyg'
+});
+```
+Подключает редактор ко всем полям, имеющим соответствующий класс.
+
+Далее достаточно подключить editor к форме заменив стандартную textarea
+
+Например, в форме для редактирования editForm.scala.html
+```scala
+@(id: Long, featureForm: Form[Feature])
+
+@import helper._
+
+@main {
+
+    <h1>Фича</h1>
+
+    @form(routes.HomeController.update(id)) {
+
+        <fieldset>
+            @CSRF.formField
+            @bootstrap.text(featureForm("title"), '_label -> "Название", '_help -> "")
+            @bootstrap.editor(featureForm("description"), '_label -> "Описание", '_help -> "")
+            @bootstrap.text(featureForm("imageUrl"), '_label -> "Ссылка на картинку", '_help -> "")
+            <input type="hidden" name="@featureForm("id").getName" value="@featureForm("id").getValue">
+        </fieldset>
+
+        <div class="actions">
+            <input type="submit" value="Сохранить" class="btn primary">
+            <a href="@routes.HomeController.list()" class="btn btn-default">Отменить</a>
+            @form(routes.HomeController.delete(id), 'class -> "topRight") {
+                @CSRF.formField
+                <input type="submit" value="Удалить" class="btn btn-danger">
+            }
+        </div>
+    }
+}
+```
+
+
 ## Запуск
 Запуск с помощью [sbt](http://www.scala-sbt.org/).  
 
@@ -255,4 +338,7 @@ sbt-isu run
 ``` 
 
 И затем откройте http://localhost:9000 в браузере.
+
+
+
 

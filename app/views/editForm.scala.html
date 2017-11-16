@@ -10,9 +10,9 @@
 
         <fieldset>
             @CSRF.formField
-            @inputText(featureForm("title"), '_label -> "Название", '_help -> "")
-            @bootstrap.textarea(featureForm("description"), '_label -> "Описание", '_help -> "")
-            @inputText(featureForm("imageUrl"), '_label -> "Ссылка на картинку", '_help -> "")
+            @bootstrap.text(featureForm("title"), '_label -> "Название", '_help -> "")
+            @bootstrap.editor(featureForm("description"), '_label -> "Описание", '_help -> "")
+            @bootstrap.text(featureForm("imageUrl"), '_label -> "Ссылка на картинку", '_help -> "")
             <input type="hidden" name="@featureForm("id").getName" value="@featureForm("id").getValue">
         </fieldset>
 

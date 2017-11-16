@@ -42,7 +42,6 @@ public class HomeController extends Controller {
      * @return
      */
     public Result list(){
-
         List<Feature> page = Feature.find.all();
         return ok(list.render(page));
     }

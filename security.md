@@ -124,6 +124,7 @@ public static String SHA1(String str){
 }
 ```
 Вы вольны выбирать какую из двух предложенных хэш-функций использовать в getHash(). 
+
 В итоге, с точки хрения модели данных после прохождения всех проверок нам необходимо будет по строке пароля 
 сгенерировать два поля в БД: соль и хэш. Для этого можем добавить метод в класс User, setPassword(String). Он же 
 будет использоваться в последствии, при смене пароля, если потребуется. 
@@ -137,9 +138,9 @@ public static String SHA1(String str){
  * @param password (новый) пароль
  */
 public void setPassword(String password) {
-    //todo Сгенерировать соль
-    //todo установить хэш от пароля (с солью)
+    //Сгенерировать соль
     this.salt = genSalt();
+    //установить хэш от пароля (с солью)
     this.passwordHash = getHash(password+salt);
 }
 ```
@@ -269,17 +270,22 @@ public class Auth extends Controller {
      */
     public Result register() {
         Form<Register> regForm = Form.form(Register.class).bindFromRequest();
-        if (regForm.hasErrors()) return badRequest(register.render(regForm));
+        if (regForm.hasErrors()) return badRequest(register.render(regForm));  // валидация формы не прошла
         else {
+            //Из формы достаем объект класса Register, нашу модель формы регистрации с заполненными полями
             Register reg = regForm.get();
+            // В конструкторе пользователя производится установка хэша от пароля с солью
             User user = new User(reg.email, reg.password);
+            // Сохраняем в БД
             user.save();
+            // аутентифицируем пользоваетеля, устанавливаем ему ключ в сессии
             session("email", reg.email);
+            // перенаправляем куда нам нужно после успешной аутентификации
             return redirect(routes.HomeController.index());
         }
     }
 ```
-Первый метод выдает signup() пустую форму, определенную в шаблоне register.scala.html, который добавим позже. 
+Первый метод signup() выдает  пустую форму, определенную в шаблоне register.scala.html, который добавим позже. 
 А метод register() выполняет весь сценарий регистрации.
 
  
@@ -323,3 +329,4 @@ public class Auth extends Controller {
 # ... TO BE CONTINUED ...
  
  
+п

@@ -41,6 +41,7 @@ public class HomeController extends Controller {
      * Список фич
      * @return
      */
+    @Security.Authenticated(Secured.class)
     public Result list(){
         List<Feature> page = Feature.find.all();
         return ok(list.render(page));
